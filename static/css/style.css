@@ -104,6 +104,11 @@ h2:after {
     -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05)
 }
 
+.hljs {
+    background: #f9f3e5 !important;
+    border: 1px solid #e47320;
+}
+
 @media (min-width: 550px) {
     h1 {
         font-size:2.4rem;
