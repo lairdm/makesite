@@ -89,6 +89,11 @@ def read_content(filename):
         'slug': match.group(2),
     }
 
+    match = re.search(r'^(\d\d\d\d)-(\d\d)-(\d\d)$', content['date'])
+    content['year'] = match.group(1)
+    content['month'] = match.group(2)
+    content['day'] = match.group(3)
+
     # Read headers.
     end = 0
     for key, val, end in read_headers(text):
@@ -148,7 +153,24 @@ def make_pages(src, dst, layout, **params):
 
     return sorted(items, key=lambda x: x['date'], reverse=True)
 
+def make_index(posts, dst, list_layout, item_layout, **params):
+    """Generate the index with the first x posts"""
 
+    items = []
+    posts_to_show = params.get('post_to_show', 5)
+    for post in posts[:posts_to_show]:
+        item_params = dict(params, **post)
+        item_params['summary'] = post['content']
+        item = render(item_layout, **item_params)
+        items.append(item)
+
+    params['content'] = ''.join(items)
+    dst_path = render(dst, **params)
+    output = render(list_layout, **params)
+
+    log('Rendering list => {} ...', dst_path)
+    fwrite(dst_path, output)
+    
 def make_list(posts, dst, list_layout, item_layout, **params):
     """Generate list page for a blog."""
     items = []
@@ -175,7 +197,7 @@ def main():
     # Default parameters.
     params = {
         'base_path': '',
-        'subtitle': 'Lorem Ipsum',
+        'subtitle': 'liquid Thoughts',
         'author': 'Admin',
         'site_url': 'http://localhost:8000',
         'current_year': datetime.datetime.now().year
@@ -189,13 +211,16 @@ def main():
     page_layout = fread('layout/page.html')
     post_layout = fread('layout/post.html')
     list_layout = fread('layout/list.html')
+    home_layout = fread('layout/home.html')
     item_layout = fread('layout/item.html')
+    article_layout = fread('layout/article.html')
     feed_xml = fread('layout/feed.xml')
     item_xml = fread('layout/item.xml')
 
     # Combine layouts to form final layouts.
     post_layout = render(page_layout, content=post_layout)
     list_layout = render(page_layout, content=list_layout)
+    home_layout = render(page_layout, content=home_layout)
 
     # Create site pages.
     make_pages('content/_index.html', '_site/index.html',
@@ -205,17 +230,17 @@ def main():
 
     # Create blogs.
     blog_posts = make_pages('content/blog/*.md',
-                            '_site/blog/{{ slug }}/index.html',
+                            '_site/blog/{{ year }}/{{ month }}/{{ day }}/{{ slug }}/index.html',
                             post_layout, blog='blog', **params)
     news_posts = make_pages('content/news/*.html',
-                            '_site/news/{{ slug }}/index.html',
+                            '_site/news/{{ year }}/{{ month }}/{{ day }}/{{ slug }}/index.html',
                             post_layout, blog='news', **params)
 
     # Create blog list pages.
     make_list(blog_posts, '_site/blog/index.html',
-              list_layout, item_layout, blog='blog', title='Blog', **params)
-    make_list(news_posts, '_site/news/index.html',
-              list_layout, item_layout, blog='news', title='News', **params)
+              list_layout, item_layout, blog='blog', title='Archive', **params)
+#    make_list(news_posts, '_site/news/index.html',
+#              list_layout, item_layout, blog='news', title='News', **params)
 
     # Create RSS feeds.
     make_list(blog_posts, '_site/blog/rss.xml',
@@ -223,7 +248,9 @@ def main():
     make_list(news_posts, '_site/news/rss.xml',
               feed_xml, item_xml, blog='news', title='News', **params)
 
-
+    make_index(blog_posts, '_site/index.html',
+              home_layout, article_layout, blog='blog', title='liquid Thoughts', **params)
+    
 # Test parameter to be set temporarily by unit tests.
 _test = None
 
