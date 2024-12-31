@@ -75,6 +75,11 @@ def rfc_2822_format(date_str):
     d = datetime.datetime.strptime(date_str, '%Y-%m-%d')
     return d.strftime('%a, %d %b %Y %H:%M:%S +0000')
 
+def human_date_format(date_str):
+    """Convert yyyy-mm-dd date string to human friendly string."""
+    d = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+    return d.strftime('%B %d, %Y')
+
 
 def read_content(filename):
     """Read content and metadata from file into a dictionary."""
@@ -115,7 +120,8 @@ def read_content(filename):
     # Update the dictionary with content and RFC 2822 date.
     content.update({
         'content': text,
-        'rfc_2822_date': rfc_2822_format(content['date'])
+        'rfc_2822_date': rfc_2822_format(content['date']),
+        'human_date': human_date_format(content['date'])
     })
 
     return content
@@ -160,7 +166,7 @@ def make_index(posts, dst, list_layout, item_layout, **params):
     posts_to_show = params.get('post_to_show', 5)
     for post in posts[:posts_to_show]:
         item_params = dict(params, **post)
-        item_params['summary'] = post['content']
+        item_params['summary'] = truncate(post['content'], 50)
         item = render(item_layout, **item_params)
         items.append(item)
 

@@ -11,6 +11,10 @@ consectetur eu, suscipit nec metus. Nam gravida id massa quis faucibus.
 Sed non consectetur eros. Nullam iaculis sit amet ex eget ultrices. Sed
 ligula arcu, vehicula vel ipsum nec, ultrices pulvinar ante.
 
+## Setting up Flyspell
+
+`code`
+
 Vivamus egestas justo sed nulla condimentum iaculis. Pellentesque
 eleifend elementum turpis sed tempus. Aliquam erat volutpat. In hac
 habitasse platea dictumst. Integer elementum sed diam at vulputate.
@@ -20,6 +24,15 @@ pellentesque odio laoreet, consequat orci. Aliquam erat volutpat. Nulla
 a vulputate mi, sed laoreet ipsum. Nulla nunc ipsum, ultricies at
 suscipit id, consectetur id erat. Suspendisse scelerisque vehicula felis
 quis luctus.
+
+```csharp
+[HttpGet("{classId:guid}")]
+    public async Task<IActionResult> GetStudents([FromRoute] Guid classId)
+    {
+        var @class = await _classesManager.GetClassById(classId);
+        return Ok(_mapper.Map<ClassWithStudentsResponseDto>(@class));
+    }
+```
 
 Donec posuere ante a nibh dictum suscipit. Mauris interdum dolor nulla,
 sit amet fermentum quam porta a. Ut metus ipsum, venenatis a lorem
