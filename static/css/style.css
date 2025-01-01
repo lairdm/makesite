@@ -86,11 +86,19 @@ img {
   height: auto;
 }
 
+p img {
+    box-shadow: 3px 3px 8px #e47320;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0;
     line-height: 1.2em;
     font-family: "Oxygen", sans-serif;
     font-weight: 300;
+}
+
+h2 {
+    margin-block-start: 0.3em;
 }
 
 h2:after {
@@ -107,6 +115,14 @@ h2:after {
 .hljs {
     background: #f9f3e5 !important;
     border: 1px solid #e47320;
+}
+
+p code {
+    background: #f9f3e5 !important;
+    border: 1px solid #e47320;
+    padding: 0.1rem 0.2rem;
+    border-radius: 4px;
+    white-space: nowrap;
 }
 
 @media (min-width: 550px) {

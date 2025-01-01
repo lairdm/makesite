@@ -80,6 +80,13 @@ def human_date_format(date_str):
     d = datetime.datetime.strptime(date_str, '%Y-%m-%d')
     return d.strftime('%B %d, %Y')
 
+def updated_date_format(date_str):
+    """Convert the updated date, if it is set"""
+    log("updated: {}", date_str)
+    if date_str is None:
+        return ''
+
+    return " | Updated: " + human_date_format(date_str)
 
 def read_content(filename):
     """Read content and metadata from file into a dictionary."""
@@ -121,7 +128,8 @@ def read_content(filename):
     content.update({
         'content': text,
         'rfc_2822_date': rfc_2822_format(content['date']),
-        'human_date': human_date_format(content['date'])
+        'human_date': human_date_format(content['date']),
+        'updated_on': updated_date_format(content.get('updated_on', None))
     })
 
     return content
