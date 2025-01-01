@@ -4,6 +4,9 @@ site:
 publish: site
 	rsync -av --delete _site/ matthewlaird.ca:/var/www/matthewlaird.ca/
 
+staging: site
+	rsync -av --delete _site/ matthewlaird.ca:/var/www/staging.matthewlaird.ca/
+
 serve: site
 	if python3 -c 'import http.server' 2> /dev/null; then \
 	    echo Running Python3 http.server ...; \
