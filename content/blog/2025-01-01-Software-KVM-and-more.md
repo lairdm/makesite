@@ -92,10 +92,10 @@ But once working it was simple enough to add to my HA Dashboard. You can see the
 			{"command":"lock","data":{"unlock":true}}]
 ```
 
-## Enhancement
+## Enhancements
 
 Now with this working I moved on to some enhancements. What about turning the display back on and unlocking the machine when switching. One of the slowest parts was after pushing the dashboard button the monitor had to switch all the USB inputs over, the computer has to notice the mouse again, then I had to wiggle it to turn off screen blanking. By using `xset` to wake everything up it cut the switch time in half in cases when the desktop had blanked the screen.
 
-As well, my long term plan is a headless Plexamp instance on a Pi which can be centrally controlled. This way when switching back and forth I'd have the same playlist going. This needed the ability change the volume on the host machine as well. So commands for amixer for volume which `Switcher` could handle too seemed obvious.
+As well, my long term plan is a headless Plexamp instance on a Pi which can be centrally controlled. This way when switching back and forth I'd have the same playlist going. This needed the ability change the volume on the host machine as well. So commands for `amixer` for volume which `Switcher` could handle too seemed obvious.
 
-The final enhancement to come is switching the input of my Edifier speakers automatically. I've purchased some <b>KY-005 Ir Emitters</b> and found a [fantastic write-up](https://marabesi.com/iot/mapping-ir-emitter-k005-receiver-ky-022-to-raspberry.html) on how to use these with lirc on a Pi. I'll publish another article when I get this working.
+The final enhancement to come is switching the input of my Edifier speakers automatically. I've purchased some <b>KY-005 Ir Emitters</b> and found a [fantastic write-up](https://marabesi.com/iot/mapping-ir-emitter-k005-receiver-ky-022-to-raspberry.html) on how to use these with `lirc` on a Pi. I'll publish another article when I get that working.
