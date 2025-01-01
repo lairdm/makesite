@@ -152,6 +152,10 @@ def make_pages(src, dst, layout, **params):
         items.append(content)
 
         dst_path = render(dst, **page_params)
+
+        match = re.search(r'_site(\S*)', dst_path)
+        page_params['full_url'] = params['site_url'] + match.group(1)
+
         output = render(layout, **page_params)
 
         log('Rendering {} => {} ...', src_path, dst_path)
@@ -172,9 +176,12 @@ def make_index(posts, dst, list_layout, item_layout, **params):
 
     params['content'] = ''.join(items)
     dst_path = render(dst, **params)
+    match = re.search(r'_site(\S*)', dst_path)
+    params['full_url'] = params['site_url'] + match.group(1)
+
     output = render(list_layout, **params)
 
-    log('Rendering list => {} ...', dst_path)
+    log('Rendering index => {} ...', dst_path)
     fwrite(dst_path, output)
     
 def make_list(posts, dst, list_layout, item_layout, **params):
@@ -188,6 +195,9 @@ def make_list(posts, dst, list_layout, item_layout, **params):
 
     params['content'] = ''.join(items)
     dst_path = render(dst, **params)
+    match = re.search(r'_site(\S*)', dst_path)
+    params['full_url'] = params['site_url'] + match.group(1)
+
     output = render(list_layout, **params)
 
     log('Rendering list => {} ...', dst_path)
